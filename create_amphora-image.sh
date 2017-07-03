@@ -11,7 +11,7 @@ git submodule init
 git submodule update
 
 echo + install package
-sudo apt install -y python-pip python-dib-utils python-yaml python-babel qemu libguestfs-tools
+sudo apt install -y python-pip python-dib-utils python-yaml python-babel qemu libguestfs-tools kpartx
 
 echo + install pip module
 sudo pip install diskimage-builder==$DISKIMAGE_BUILDER_VERSION
