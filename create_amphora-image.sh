@@ -6,6 +6,10 @@ export PYTHONLIB_DIR="/usr/local/lib/python2.7/dist-packages"
 DISKIMAGE_BUILDER_VERSION="2.6.1"
 OCTAVIA_VERSION="1.0.0.0b2"
 
+echo + init git submodules
+git submodule init
+git submodule update
+
 echo + install package
 sudo apt install -y python-pip python-dib-utils python-yaml python-babel qemu libguestfs-tools
 
