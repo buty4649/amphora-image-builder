@@ -1,3 +1,0 @@
-[submodule "octavia"]
-	path = octavia
-	url = https://github.com/openstack/octavia.git
