@@ -26,6 +26,8 @@ cd "${BASEDIR}/octavia/diskimage-create"
 echo + exec diskimage-create.sh
 mkdir -p "${BASEDIR}/output"
 sudo ./diskimage-create.sh -d xenial -o "${BASEDIR}/output/amphora-x64-haproxy.qcow2"
+sudo chown -R $(whoami): "${BASEDIR}/output"
 
 echo + exec image-tests.sh
 sudo ./image-tests.sh "${BASEDIR}/output"
+
