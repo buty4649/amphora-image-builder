@@ -6,9 +6,12 @@ export PYTHONLIB_DIR="/usr/local/lib/python2.7/dist-packages"
 DISKIMAGE_BUILDER_VERSION="2.6.1"
 OCTAVIA_VERSION=${1:-"1.0.1"}
 
-echo + init git submodules
-git submodule init
-git submodule update
+echo + git clone octavia repository
+[ ! -d "octavia" ] && git clone https://github.com/openstack/octavia.git
+cd octavia
+git fetch
+git checkout $OCTAVIA_VERSION
+cd ../
 
 echo + install package
 sudo apt install -y python-pip python-dib-utils python-yaml python-babel qemu libguestfs-tools kpartx
