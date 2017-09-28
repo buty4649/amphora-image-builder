@@ -4,7 +4,7 @@ set -e
 BASEDIR="$(cd $(dirname $0); pwd)"
 export PYTHONLIB_DIR="/usr/local/lib/python2.7/dist-packages"
 DISKIMAGE_BUILDER_VERSION="2.6.1"
-OCTAVIA_VERSION="1.0.0.0b2"
+OCTAVIA_VERSION=${1:-"1.0.1"}
 
 echo + init git submodules
 git submodule init
