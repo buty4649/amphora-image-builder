@@ -14,6 +14,7 @@ git checkout $OCTAVIA_VERSION
 cd ../
 
 echo + install package
+sudo apt update
 sudo apt install -y python-pip python-dib-utils python-yaml python-babel qemu libguestfs-tools kpartx
 
 echo + install pip module
