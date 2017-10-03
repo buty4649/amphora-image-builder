@@ -1,6 +1,6 @@
 {
   "open-iscsi": {
     "phase": "post-install.d",
-    "unsintall": true
+    "uninstall": true
   }
 }
