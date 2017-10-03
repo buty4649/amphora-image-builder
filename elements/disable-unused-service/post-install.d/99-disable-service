@@ -1,6 +1,6 @@
 #!/bin/bash
 
-TARGET=(mdadm accounts-daemon polkitd lxcfs)
+TARGET=(mdadm lvm2-lvmetad accounts-daemon polkitd lxcfs)
 
 for SERVICE in ${TARGET[@]}; do
   systemctl disable $SERVICE
