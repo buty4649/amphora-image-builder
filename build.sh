@@ -9,7 +9,7 @@ fi
 BASEDIR="$(cd $(dirname $0); pwd)"
 DISKIMAGE_BUILDER_VERSION="2.9.0"
 OCTAVIA_VERSION=${1:-"1.0.1"}
-CUSTOM_ELEMENTS=${CUSTOM_ELEMENTS:-"disable-unused-service"}
+CUSTOM_ELEMENTS=${CUSTOM_ELEMENTS:-"disable-unused-service timezone"}
 
 echo + git clone octavia repository
 [ ! -d "octavia" ] && git clone https://github.com/openstack/octavia.git
