@@ -35,7 +35,7 @@ if [ -z "$DIB_REPO_PATH" ];then
 fi
 
 export DIB_LOCAL_ELEMENTS_PATH="${BASEDIR}/elements"
-export DIB_LOCAL_ELEMENTS="disable-unused-service"
+export DIB_LOCAL_ELEMENTS="${CUSTOM_ELEMENTS}"
 
 ./diskimage-create.sh -d xenial -o "${BASEDIR}/output/amphora-x64-haproxy.qcow2"
 chown -R $(whoami): "${BASEDIR}/output"
