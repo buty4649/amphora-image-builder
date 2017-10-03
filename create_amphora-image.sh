@@ -9,6 +9,7 @@ fi
 BASEDIR="$(cd $(dirname $0); pwd)"
 DISKIMAGE_BUILDER_VERSION="2.9.0"
 OCTAVIA_VERSION=${1:-"1.0.1"}
+CUSTOM_ELEMENTS=${CUSTOM_ELEMENTS:-"disable-unused-service"}
 
 echo + git clone octavia repository
 [ ! -d "octavia" ] && git clone https://github.com/openstack/octavia.git
@@ -32,6 +33,9 @@ mkdir -p "${BASEDIR}/output"
 if [ -z "$DIB_REPO_PATH" ];then
     export DIB_REPO_PATH="$(dirname $(/usr/local/lib/python2.7/dist-packages/diskimage_builder))"
 fi
+
+export DIB_LOCAL_ELEMENTS_PATH="${BASEDIR}/elements"
+export DIB_LOCAL_ELEMENTS="disable-unused-service"
 
 ./diskimage-create.sh -d xenial -o "${BASEDIR}/output/amphora-x64-haproxy.qcow2"
 chown -R $(whoami): "${BASEDIR}/output"
