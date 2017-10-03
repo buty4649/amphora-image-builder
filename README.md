@@ -1,4 +1,4 @@
-# amphora-image
+# amphora-image-builder
 OpenStack Octaviaのamphora用イメージ作成ツール
 Ubuntu 16.04(Xenial)で動作検証した
 
