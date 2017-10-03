@@ -1,6 +1,11 @@
 #!/bin/bash
 set -e
 
+if [ $(id -u) != 0 ];then
+    echo "Please run as root!"
+    exit 1
+fi
+
 BASEDIR="$(cd $(dirname $0); pwd)"
 export PYTHONLIB_DIR="/usr/local/lib/python2.7/dist-packages"
 DISKIMAGE_BUILDER_VERSION="2.9.0"
@@ -14,21 +19,20 @@ git checkout $OCTAVIA_VERSION
 cd ../
 
 echo + install package
-sudo apt update
-sudo apt install -y python-pip python-dib-utils python-yaml python-babel qemu libguestfs-tools kpartx
+apt update
+apt install -y python-pip python-dib-utils python-yaml python-babel qemu libguestfs-tools kpartx
 
 echo + install pip module
-sudo pip install diskimage-builder==$DISKIMAGE_BUILDER_VERSION
+pip install diskimage-builder==$DISKIMAGE_BUILDER_VERSION
 
 export DIB_REPO_PATH="${PYTHONLIB_DIR}/diskimage_builder"
-export DIB_ELEMENTS="${DIB_REPO_PATH}/elements"
 cd "${BASEDIR}/octavia/diskimage-create"
 
 echo + exec diskimage-create.sh
 mkdir -p "${BASEDIR}/output"
-sudo ./diskimage-create.sh -d xenial -o "${BASEDIR}/output/amphora-x64-haproxy.qcow2"
-sudo chown -R $(whoami): "${BASEDIR}/output"
+./diskimage-create.sh -d xenial -o "${BASEDIR}/output/amphora-x64-haproxy.qcow2"
+chown -R $(whoami): "${BASEDIR}/output"
 
 echo + exec image-tests.sh
-sudo ./image-tests.sh "${BASEDIR}/output"
+./image-tests.sh "${BASEDIR}/output"
 
