@@ -1,0 +1,13 @@
+#!/bin/bash
+
+if [ ${DIB_DEBUG_TRACE:-0} -gt 0 ]; then
+    set -x
+fi
+set -eu
+set -o pipefail
+
+install -m 0755 -o root -g root $(dirname $0)/keepalived_status_check.py /usr/local/bin/keepalived_status_check.py
+sed -i -e 's,%%{OS_USERNAME}%%,'${OS_USERNAME}',g' \
+       -e 's,%%{OS_PASSWORD}%%,'${OS_PASSWORD}',g' \
+       -e 's,%%{OS_AUTH_URL}%%,'${OS_AUTH_URL}',g' \
+       /usr/local/bin/keepalived_status_check.py
