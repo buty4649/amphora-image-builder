@@ -20,7 +20,7 @@ cd ../
 
 echo + install package
 apt update
-apt install -y python-pip python-dib-utils python-yaml python-babel qemu libguestfs-tools kpartx
+apt install -y python-pip python-dib-utils python-yaml python-babel qemu libguestfs-tools kpartx debootstrap
 
 echo + install pip module
 pip install diskimage-builder==$DISKIMAGE_BUILDER_VERSION
