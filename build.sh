@@ -8,7 +8,7 @@ fi
 
 BASEDIR="$(cd $(dirname $0); pwd)"
 DISKIMAGE_BUILDER_VERSION="2.18.0"
-OCTAVIA_VERSION=${1:-"2.0.2"}
+OCTAVIA_VERSION=${1:-"3.0.1"}
 CUSTOM_ELEMENTS=${CUSTOM_ELEMENTS:-"disable-unused-service timezone sync-hwclock"}
 
 echo + git clone octavia repository
