@@ -1,4 +1,4 @@
-#! /usr/bin/python
+#!/opt/amphora-agent-venv/bin/python3
 
 import os
 import sys
