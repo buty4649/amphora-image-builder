@@ -1,7 +1,0 @@
-#!/bin/bash
-
-TARGET=(iscsi.service iscsid.service)
-
-for SERVICE in ${TARGET[@]}; do
-  systemctl disable $SERVICE
-done
