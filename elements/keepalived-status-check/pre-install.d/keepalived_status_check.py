@@ -4,7 +4,7 @@ import os
 import sys
 import select
 import json
-import urllib2
+import urllib3
 from keystoneauth1 import identity
 from keystoneauth1 import session
 from neutronclient.v2_0 import client
@@ -39,10 +39,11 @@ def retrivePortID():
   with open(interface_file, "r") as f:
     mac_address = f.readline().split(" ")[0]
 
-  response = urllib2.urlopen("http://169.254.169.254/openstack/latest/network_data.json")
-  network_data = json.loads(response.read())
+  http = urllib3.PoolManager()
+  response = http.request("GET", "http://169.254.169.254/openstack/latest/network_data.json")
+  network_data = json.loads(response.data.decode("utf-8"))
 
-  info = filter((lambda n: n["ethernet_mac_address"] == mac_address), network_data["links"])
+  info = list(filter((lambda n: n["ethernet_mac_address"] == mac_address), network_data["links"]))
   return info[0]["vif_id"]
 
 def onInit():
