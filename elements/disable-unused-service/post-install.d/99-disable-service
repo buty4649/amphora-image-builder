@@ -1,6 +1,6 @@
 #!/bin/bash
 
-TARGET=(mdadm lvm2-lvmetad accounts-daemon polkitd lxcfs)
+TARGET=(iscsi.service iscsid.service)
 
 for SERVICE in ${TARGET[@]}; do
   systemctl disable $SERVICE
