@@ -9,7 +9,7 @@ fi
 BASEDIR="$(cd $(dirname $0); pwd)"
 DISKIMAGE_BUILDER_VERSION="2.18.0"
 OCTAVIA_VERSION=${1:-"3.0.1"}
-CUSTOM_ELEMENTS=${CUSTOM_ELEMENTS:-"timezone sync-hwclock keepalived-status-check"}
+CUSTOM_ELEMENTS=${CUSTOM_ELEMENTS:-"timezone sync-hwclock keepalived-status-check kernel-modules"}
 
 echo + git clone octavia repository
 [ ! -d "octavia" ] && git clone https://github.com/openstack/octavia.git
