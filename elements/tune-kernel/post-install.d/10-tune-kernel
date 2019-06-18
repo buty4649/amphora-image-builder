@@ -1,0 +1,6 @@
+#!/bin/bash
+
+set -eu
+set -o pipefail
+
+sysctl-write-value "net.netfilter.nf_conntrack_max" 1000000
