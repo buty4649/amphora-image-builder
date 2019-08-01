@@ -9,3 +9,21 @@ $ git clone https://github.com/buty4649/amphora-image-builder
 $ cd amphora-image-builder
 $ sudo OS_USERNAME=<username> OS_PASSWORD=<password> OS_AUTH_URL=<auth url> ./build.sh
 ```
+
+## Tips
+
+### /tmp/dib_build.******/mnt is not a directory というエラーがでる
+
+自ホストのhostnameが正しく引けるように/etc/hostsを設定してください。
+例えば、以下のようなコマンドで解決します。
+
+```
+$ sudo bash -c "echo $(hostname) >> /etc/hosts"
+```
+
+原因としては、内部的に `sudo loseup --show` を実行していて1行目にマウントパスが来ることを期待しています。しかしながら、hostnameが引けない場合はsudoの警告が出るためにエラーとなります。
+sudoのエラー警告メッセージ例
+
+```
+sudo: unable to resolve host tuboyaki
+```
