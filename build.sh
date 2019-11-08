@@ -7,8 +7,8 @@ if [ $(id -u) != 0 ];then
 fi
 
 BASEDIR="$(cd $(dirname $0); pwd)"
-DISKIMAGE_BUILDER_VERSION="2.18.0"
-OCTAVIA_VERSION=${1:-"3.0.1"}
+DISKIMAGE_BUILDER_VERSION="2.29.1"
+OCTAVIA_VERSION=${1:-"5.0.0"}
 CUSTOM_ELEMENTS=${CUSTOM_ELEMENTS:-"timezone sync-hwclock keepalived-status-check tune-kernel"}
 
 echo + git clone octavia repository
