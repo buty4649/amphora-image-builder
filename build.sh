@@ -10,6 +10,7 @@ BASEDIR="$(cd $(dirname $0); pwd)"
 DISKIMAGE_BUILDER_VERSION="2.29.1"
 OCTAVIA_VERSION=${1:-"5.0.0"}
 CUSTOM_ELEMENTS=${CUSTOM_ELEMENTS:-"timezone sync-hwclock keepalived-status-check tune-kernel"}
+DISTRO=${DISTRO:-"bionic"}
 
 echo + git clone octavia repository
 [ ! -d "octavia" ] && git clone https://github.com/openstack/octavia.git
@@ -37,7 +38,7 @@ fi
 export DIB_LOCAL_ELEMENTS_PATH="${BASEDIR}/elements"
 export DIB_LOCAL_ELEMENTS="${CUSTOM_ELEMENTS}"
 
-./diskimage-create.sh -d xenial -o "${BASEDIR}/output/amphora-x64-haproxy.qcow2"
+./diskimage-create.sh -d ${DISTRO} -o "${BASEDIR}/output/amphora-x64-haproxy.qcow2"
 chown -R $(whoami): "${BASEDIR}/output"
 
 echo + exec image-tests.sh
