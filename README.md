@@ -21,7 +21,7 @@ $ sudo OS_USERNAME=<username> OS_PASSWORD=<password> OS_AUTH_URL=<auth url> ./bu
 $ sudo bash -c "echo $(hostname) >> /etc/hosts"
 ```
 
-原因としては、内部的に `sudo loseup --show` を実行していて1行目にマウントパスが来ることを期待しています。しかしながら、hostnameが引けない場合はsudoの警告が出るためにエラーとなります。
+原因としては、内部的に `sudo losetup --show` を実行していて1行目にマウントパスが来ることを期待しています。しかしながら、hostnameが引けない場合はsudoの警告が出るためにエラーとなります。
 sudoのエラー警告メッセージ例
 
 ```
