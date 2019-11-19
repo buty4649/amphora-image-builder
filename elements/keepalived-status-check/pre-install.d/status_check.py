@@ -1,6 +1,9 @@
 #!/opt/amphora-agent-venv/bin/python3
 
 import os
+import time
+import signal
+from subprocess import check_output
 from keystoneauth1 import identity
 from keystoneauth1 import session
 from neutronclient.v2_0 import client
@@ -22,6 +25,16 @@ def getNeutronClient():
   sess = session.Session(auth=auth)
   return client.Client(session=sess)
 
+def is_keepalived_master():
+    data_path = "/tmp/keepalived.data"
+    os.remove(data_path)
+    pid = sorted(list(map(int,check_output(["pidof", "keepalived"]).split())))[0]
+    os.kill(int(pid), signal.SIGUSR1)
+    while not os.path.exists(data_path):
+      time.sleep(0.1)
+    with open(data_path, "r") as f:
+      return "State = MASTER" in f.read()
+
 def retrivePortID(neutron):
   interface_file = "/var/lib/octavia/plugged_interfaces"
   if not os.path.exists(interface_file):
@@ -34,6 +47,8 @@ def retrivePortID(neutron):
   return res["ports"][0]["id"]
 
 def update_port():
+  if not is_keepalived_master():
+      return False
   neutron = getNeutronClient()
   port_id = retrivePortID(neutron)
   if port_id is None:
