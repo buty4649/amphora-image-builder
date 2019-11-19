@@ -17,10 +17,9 @@ def getNeutronClient():
                            password=password,
                            project_name=project_name,
                            project_domain_id=project_domain_id,
-                           user_domain_id=user_domain_id,
-                           retries=5)
+                           user_domain_id=user_domain_id)
   sess = session.Session(auth=auth)
-  return client.Client(session=sess)
+  return client.Client(session=sess, retries=5)
 
 def retrivePortID(neutron):
   interface_file = "/var/lib/octavia/plugged_interfaces"
