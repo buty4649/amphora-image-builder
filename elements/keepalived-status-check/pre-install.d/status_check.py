@@ -26,12 +26,16 @@ def getNeutronClient():
   return client.Client(session=sess)
 
 def is_keepalived_master():
+    retry_cnt = 0
     data_path = "/tmp/keepalived.data"
     os.remove(data_path)
     pid = sorted(list(map(int,check_output(["pidof", "keepalived"]).split())))[0]
     os.kill(int(pid), signal.SIGUSR1)
     while not os.path.exists(data_path):
       time.sleep(0.1)
+      retry_cnt += 1
+      if retry_cnt > 10:
+          return False
     with open(data_path, "r") as f:
       return "State = MASTER" in f.read()
 
