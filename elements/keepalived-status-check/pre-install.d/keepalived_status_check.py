@@ -2,6 +2,7 @@
 
 import sys
 import select
+import datetime
 import status_check
 
 
@@ -13,7 +14,10 @@ def onInit():
   pass
 
 def onReceive(msgs):
-  return status_check.update_port()
+  with open('/var/log/keepalived_status_check.log', 'a') as f:
+    result = status_check.update_port()
+    f.write("{} recieved: msg: {} result: {}".format(datetime.datetime.now(), msgs, result))
+  return
 
 def onExit():
   pass
