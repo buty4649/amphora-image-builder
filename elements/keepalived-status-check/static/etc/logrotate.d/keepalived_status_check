@@ -1,6 +1,6 @@
 /var/log/keepalived_status_check.log' {
     weekly
-    rotate 720
+    rotate 
     missingok
     notifempty
     compress
