@@ -4,3 +4,4 @@ set -eu
 set -o pipefail
 
 sysctl-write-value "net.netfilter.nf_conntrack_max" 1000000
+sysctl-write-value "net.ipv4.tcp_mem" "404622 566470 809244"
