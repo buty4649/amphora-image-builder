@@ -52,13 +52,16 @@ def retrivePortID(neutron):
 
 def update_port():
   if not is_keepalived_master():
-      return False
+    return "I'm not a MASTER"
   neutron = getNeutronClient()
   port_id = retrivePortID(neutron)
   if port_id is None:
-    return False
+    return "failed: port_id was not found"
 
-  neutron.update_port(port_id, {"port":{"admin_state_up": True}})
+  if neutron.update_port(port_id, {"port":{"admin_state_up": True}}):
+      return "update success"
+  else:
+      return "update failed: api call failed"
 
 if __name__ == '__main__':
   update_port()
