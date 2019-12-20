@@ -8,8 +8,10 @@ set -o pipefail
 
 mkdir /etc/cron.d
 install -m 0755 -o root -g root $(dirname $0)/keepalived_status_check.py /usr/local/bin/keepalived_status_check.py
+install -m 0755 -o root -g root $(dirname $0)/keepalived_status_check.py.sh /usr/local/bin/keepalived_status_check.py.sh
 install -m 0755 -o root -g root $(dirname $0)/status_check.py /usr/local/bin/status_check.py
 install -m 0644 -o root -g root $(dirname $0)/minutely_status_check /etc/cron.d/minutely_status_check
+install -m 0440 -o root -g root $(dirname $0)/sudoers_syslog /etc/sudoers.d/syslog
 sed -i -e 's,%%{OS_USERNAME}%%,'${OS_USERNAME}',g' \
        -e 's,%%{OS_PASSWORD}%%,'${OS_PASSWORD}',g' \
        -e 's,%%{OS_AUTH_URL}%%,'${OS_AUTH_URL}',g' \
