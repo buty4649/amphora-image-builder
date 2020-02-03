@@ -1,0 +1,11 @@
+[Unit]
+Description = node-exporter
+
+[Service]
+User = root
+ExecStart = /usr/local/bin/node_exporter --web.listen-address=:9100
+Restart = always
+Type = simple
+
+[Install]
+WantedBy = multi-user.target
