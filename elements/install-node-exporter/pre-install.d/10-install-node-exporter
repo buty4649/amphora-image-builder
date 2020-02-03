@@ -6,7 +6,7 @@ fi
 set -eu
 set -o pipefail
 VERSION=0.18.1
-wget https://github.com/prometheus/node_exporter/releases/download/v${VERSION}/node_exporter-${VERSION}.linux-amd64.tar.gz -O - | tar zxvf -
+curl -L https://github.com/prometheus/node_exporter/releases/download/v${VERSION}/node_exporter-${VERSION}.linux-amd64.tar.gz | tar zxvf -
 mv node_exporter-${VERSION}.linux-amd64/node_exporter /usr/local/bin/
 rm -rf node_exporter-${VERSION}.linux-amd64
 systemctl enable node-exporter
