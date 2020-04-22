@@ -8,7 +8,7 @@ fi
 
 BASEDIR="$(cd $(dirname $0); pwd)"
 DISKIMAGE_BUILDER_VERSION="2.29.1"
-OCTAVIA_VERSION=${1:-"5.0.0"}
+OCTAVIA_VERSION=${1:-"5.0.1"}
 CUSTOM_ELEMENTS=${CUSTOM_ELEMENTS:-"timezone sync-hwclock keepalived-status-check tune-kernel improve-haproxy-logrotate install-node-exporter"}
 DISTRO=${DISTRO:-"bionic"}
 
