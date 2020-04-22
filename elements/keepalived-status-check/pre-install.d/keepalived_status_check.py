@@ -16,7 +16,7 @@ def onInit():
 def onReceive(msgs):
   with open('/var/log/keepalived_status_check.log', 'a') as f:
     result = status_check.update_port()
-    f.write("{} recieved: msg: {} result: {}".format(datetime.datetime.now(), msgs, result))
+    f.write("{} recieved: msg: {} result: {}\n".format(datetime.datetime.now(), msgs, result))
   return
 
 def onExit():
