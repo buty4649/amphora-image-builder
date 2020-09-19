@@ -39,6 +39,19 @@ def is_keepalived_master():
     with open(data_path, "r") as f:
       return "State = MASTER" in f.read()
 
+def is_state_change(is_master):
+    data_path = "/tmp/keepalived.last_state"
+    current = "MASTER" if is_master else "BACKUP"
+    ret = False
+    if os.path.exists(data_path):
+      with open(data_path, "r") as f:
+        if current not in f.read():
+          ret = True
+
+    with open(data_path, mode='w') as f:
+      f.write(current)
+    return ret
+
 def retrivePortID(neutron):
   interface_file = "/var/lib/octavia/plugged_interfaces"
   if not os.path.exists(interface_file):
@@ -51,7 +64,11 @@ def retrivePortID(neutron):
   return res["ports"][0]["id"]
 
 def update_port():
-  if not is_keepalived_master():
+  is_master = is_keepalived_master()
+  if not is_state_change(is_master):
+    return "same state"
+
+  if not is_master:
     return "I'm not a MASTER"
   neutron = getNeutronClient()
   port_id = retrivePortID(neutron)
