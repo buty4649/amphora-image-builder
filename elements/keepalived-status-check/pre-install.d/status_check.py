@@ -42,11 +42,11 @@ def is_keepalived_master():
 def is_state_change(is_master):
     data_path = "/tmp/keepalived.last_state"
     current = "MASTER" if is_master else "BACKUP"
-    ret = False
+    ret = True
     if os.path.exists(data_path):
       with open(data_path, "r") as f:
-        if current not in f.read():
-          ret = True
+        if current in f.read():
+          ret = False
 
     with open(data_path, mode='w') as f:
       f.write(current)
@@ -64,7 +64,13 @@ def retrivePortID(neutron):
   return res["ports"][0]["id"]
 
 def update_port():
-  is_master = is_keepalived_master()
+  try:
+    is_master = is_keepalived_master()
+  except:
+    if os.path.exists("/tmp/keepalived.last_state"):
+      os.remove("/tmp/keepalived.last_state")
+    return "get keepalived state error"
+
   if not is_state_change(is_master):
     return "same state"
 
