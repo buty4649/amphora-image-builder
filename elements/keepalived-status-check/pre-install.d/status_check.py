@@ -7,6 +7,7 @@ from subprocess import check_output
 from keystoneauth1 import identity
 from keystoneauth1 import session
 from neutronclient.v2_0 import client
+LAST_STATE_FILE="/tmp/keepalived.last_state"
 
 def getNeutronClient():
   username='%%{OS_USERNAME}%%'
@@ -39,16 +40,20 @@ def is_keepalived_master():
     with open(data_path, "r") as f:
       return "State = MASTER" in f.read()
 
+def delete_last_state_file():
+  if os.path.exists(LAST_STATE_FILE):
+    os.remove(LAST_STATE_FILE)
+
+
 def is_state_change(is_master):
-    data_path = "/tmp/keepalived.last_state"
     current = "MASTER" if is_master else "BACKUP"
     ret = True
-    if os.path.exists(data_path):
-      with open(data_path, "r") as f:
+    if os.path.exists(LAST_STATE_FILE):
+      with open(LAST_STATE_FILE, "r") as f:
         if current in f.read():
           ret = False
 
-    with open(data_path, mode='w') as f:
+    with open(LAST_STATE_FILE, mode='w') as f:
       f.write(current)
     return ret
 
@@ -66,25 +71,25 @@ def retrivePortID(neutron):
 def update_port():
   try:
     is_master = is_keepalived_master()
+
+    if not is_state_change(is_master):
+      return "same state"
+
+    if not is_master:
+      return "I'm not a MASTER"
+
+    neutron = getNeutronClient()
+    port_id = retrivePortID(neutron)
+    if port_id is None:
+      return "failed: port_id was not found"
+
+    if neutron.update_port(port_id, {"port":{"admin_state_up": True}}):
+        return "update success"
+    else:
+        return "update failed: api call failed"
   except:
-    if os.path.exists("/tmp/keepalived.last_state"):
-      os.remove("/tmp/keepalived.last_state")
-    return "get keepalived state error"
-
-  if not is_state_change(is_master):
-    return "same state"
-
-  if not is_master:
-    return "I'm not a MASTER"
-  neutron = getNeutronClient()
-  port_id = retrivePortID(neutron)
-  if port_id is None:
-    return "failed: port_id was not found"
-
-  if neutron.update_port(port_id, {"port":{"admin_state_up": True}}):
-      return "update success"
-  else:
-      return "update failed: api call failed"
+    delete_last_state_file()
+    return "something error occured"
 
 if __name__ == '__main__':
   update_port()
