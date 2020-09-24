@@ -7,6 +7,7 @@ from subprocess import check_output
 from keystoneauth1 import identity
 from keystoneauth1 import session
 from neutronclient.v2_0 import client
+LAST_STATE_FILE="/tmp/keepalived.last_state"
 
 def getNeutronClient():
   username='%%{OS_USERNAME}%%'
@@ -39,16 +40,20 @@ def is_keepalived_master():
     with open(data_path, "r") as f:
       return "State = MASTER" in f.read()
 
-def is_state_change(is_master):
-    data_path = "/tmp/keepalived.last_state"
-    current = "MASTER" if is_master else "BACKUP"
-    ret = False
-    if os.path.exists(data_path):
-      with open(data_path, "r") as f:
-        if current not in f.read():
-          ret = True
+def delete_last_state_file():
+  if os.path.exists(LAST_STATE_FILE):
+    os.remove(LAST_STATE_FILE)
 
-    with open(data_path, mode='w') as f:
+
+def is_state_change(is_master):
+    current = "MASTER" if is_master else "BACKUP"
+    ret = True
+    if os.path.exists(LAST_STATE_FILE):
+      with open(LAST_STATE_FILE, "r") as f:
+        if current in f.read():
+          ret = False
+
+    with open(LAST_STATE_FILE, mode='w') as f:
       f.write(current)
     return ret
 
@@ -64,21 +69,27 @@ def retrivePortID(neutron):
   return res["ports"][0]["id"]
 
 def update_port():
-  is_master = is_keepalived_master()
-  if not is_state_change(is_master):
-    return "same state"
+  try:
+    is_master = is_keepalived_master()
 
-  if not is_master:
-    return "I'm not a MASTER"
-  neutron = getNeutronClient()
-  port_id = retrivePortID(neutron)
-  if port_id is None:
-    return "failed: port_id was not found"
+    if not is_state_change(is_master):
+      return "same state"
 
-  if neutron.update_port(port_id, {"port":{"admin_state_up": True}}):
-      return "update success"
-  else:
-      return "update failed: api call failed"
+    if not is_master:
+      return "I'm not a MASTER"
+
+    neutron = getNeutronClient()
+    port_id = retrivePortID(neutron)
+    if port_id is None:
+      return "failed: port_id was not found"
+
+    if neutron.update_port(port_id, {"port":{"admin_state_up": True}}):
+        return "update success"
+    else:
+        return "update failed: api call failed"
+  except:
+    delete_last_state_file()
+    return "something error occured"
 
 if __name__ == '__main__':
   update_port()
