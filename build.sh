@@ -32,7 +32,7 @@ echo + exec diskimage-create.sh
 mkdir -p "${BASEDIR}/output"
 
 if [ -z "$DIB_REPO_PATH" ];then
-    export DIB_REPO_PATH="$(dirname $(/usr/local/lib/python2.7/dist-packages/diskimage_builder))"
+    export DIB_REPO_PATH="$(dirname $(/usr/local/lib/python3.6/dist-packages/diskimage_builder))"
 fi
 
 export DIB_LOCAL_ELEMENTS_PATH="${BASEDIR}/elements"
