@@ -7,7 +7,9 @@ Ubuntu 16.04(Xenial)で動作検証した
 ```
 $ git clone https://github.com/buty4649/amphora-image-builder
 $ cd amphora-image-builder
-$ sudo OS_USERNAME=<username> OS_PASSWORD=<password> OS_AUTH_URL=<auth url> ./build.sh
+$ vagrant up
+$ vagrant ssh
+# sudo OS_USERNAME=<username> OS_PASSWORD=<password> OS_AUTH_URL=<auth url> ./build.sh
 ```
 
 ## Tips
