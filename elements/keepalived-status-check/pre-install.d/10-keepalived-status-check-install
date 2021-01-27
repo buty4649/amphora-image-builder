@@ -6,7 +6,7 @@ fi
 set -eu
 set -o pipefail
 
-mkdir /etc/cron.d
+mkdir -p /etc/cron.d
 install -m 0755 -o root -g root $(dirname $0)/keepalived_status_check.py /usr/local/bin/keepalived_status_check.py
 install -m 0755 -o root -g root $(dirname $0)/keepalived_status_check.py.sh /usr/local/bin/keepalived_status_check.py.sh
 install -m 0755 -o root -g root $(dirname $0)/status_check.py /usr/local/bin/status_check.py
